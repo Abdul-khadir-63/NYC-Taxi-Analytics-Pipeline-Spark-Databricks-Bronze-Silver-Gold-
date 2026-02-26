@@ -71,7 +71,7 @@ silver/
 gold/
    daily_revenue/
    hourly_demand/
-🥉 Bronze Layer — Raw Data
+<h1 align="center">  🥉 Bronze Layer — Raw Data</h1>
 Purpose
 
 Store original structured dataset
