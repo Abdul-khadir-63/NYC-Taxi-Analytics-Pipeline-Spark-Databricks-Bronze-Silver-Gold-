@@ -3,7 +3,11 @@
 <p align="center">
   End-to-End Spark Data Engineering Project on 112M+ Records
 </p>
-
+ ----------------------------------
+ <p align="center">
+  <img src="docs/Data%20flow%20Diagram.drawio.png" alt="NYC Taxi Data Flow Diagram" width="850" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+</p>
+ -------------------------------------
 <p align="center">
   <img src="https://img.shields.io/badge/Apache%20Spark-PySpark-orange">
   <img src="https://img.shields.io/badge/Platform-Databricks-red">
