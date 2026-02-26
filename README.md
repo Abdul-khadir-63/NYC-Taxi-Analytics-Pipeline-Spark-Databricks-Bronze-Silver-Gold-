@@ -261,5 +261,5 @@ Small file compaction
 
 Monitoring & alerting
 
-<h1 align="center"> ## 🌟 About Me </h1>
+<h1 align="center">🌟 About Me </h1>
 Hi there! I'm **Abdul Khadir**, I'm an Deploma computer Science Pass out Student on a mission to Became a Data Engineer!
