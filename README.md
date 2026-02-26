@@ -139,195 +139,113 @@ df.write.format("parquet") \
 
 CSV → converted to Parquet for fast analytics.
 
-<h2 align="center">🏗 Project Architecture</h2>
+<h1 align="center">🏗️ Project Architecture & Pipeline Design</h1>
+
+
+
+<div style="background-color: #f6f8fa; padding: 20px; border-radius: 10px; border: 1px solid #ddd; margin-bottom: 30px;">
+  <h3 style="margin-top: 0;">📁 Directory Structure</h3>
+  <pre style="font-family: 'Courier New', monospace; color: #24292e;">
 NYC_Project/
-
-bronze/
-   taxi_raw_data/
-
-silver/
-   clean_valid_trips/
-   anomalies/
-
-gold/
-   daily_revenue/
-   hourly_demand/
-<h2 align="center">🥉 Bronze Layer — Raw Data</h2>
-Purpose
-
-Store original structured dataset
-
-No business logic applied
-
-Convert CSV → Parquet
-
-Validation Performed
-
-Row count verification (112M+ rows)
-
-Null checks
-
-Negative fare detection
-
-Distance validation
-
-Timestamp consistency check
-
-Bronze keeps data exactly as received.
-
-<h2 align="center">🥈 Silver Layer — Clean & Validated Data</h2>
-Purpose
-
-Apply business rules
-
-Parse timestamps
-
-Engineer trip duration
-
-Identify anomalies
-
-Separate clean vs invalid trips
-
-Transformations
-
-Convert string → timestamp
-
-Calculate trip_duration_minutes
-
-Validation Rules
-
-Duration > 0
-
-Fare > 0
-
-Passenger count > 0
-
-Pickup ≤ Dropoff
-
-Outputs
-clean_valid_trips/
-anomalies/
-
-Simulates real-world data quality enforcement.
-
-<h2 align="center">🥇 Gold Layer — Business KPIs</h2>
-
-Analytics-ready datasets for dashboards and reporting.
-
-📊 Daily Revenue KPI
-
-Business Questions
-
-Revenue per day
-
-Total trips per day
-
-Average trip value
-
-Aggregations
-
-SUM(total_amount)
-
-COUNT(*)
-
-AVG(total_amount)
-
-Stored at:
-
-gold/daily_revenue/
-⏰ Hourly Demand Intelligence
-
-Business Questions
-
-Peak travel hours
-
-Revenue by hour
-
-Average fare trends
-
-Trip distance patterns
-
-Aggregations
-
-Trip count
-
-Total revenue
-
-Average fare
-
-Average trip distance
-
-Stored at:
-
-gold/hourly_demand/
-<h2 align="center">🚀 Performance Optimizations Applied</h2>
-
-Explicit schema definition
-
-Parquet conversion
-
-Column pruning
-
-Repartition before groupBy
-
-Shuffle partition tuning
-
-Explain plan analysis
-
-Adaptive execution awareness
-
-<h2 align="center">📈 What This Project Demonstrates</h2>
-
-Handling large datasets (100M+ rows)
-
-Layered data architecture
-
-Data quality engineering
-
-Business KPI modeling
-
-Spark performance tuning
-
-Partition strategy design
-
-Production ETL mindset
-
-<h2 align="center">🛠 Technologies Used</h2>
-
-Apache Spark (PySpark)
-
-Databricks
-
-Parquet
-
-Distributed processing
-
-Data engineering best practices
-
-<h2 align="center">🎯 Key Learnings</h2>
-
-Shuffle operations must be controlled
-
-Repartition strategy impacts performance
-
-Always measure anomalies before cleaning
-
-Separate raw, clean, and business layers
-
-Build analytics tables, not just transformations
-
-<h2 align="center">📌 Future Improvements</h2>
-
-Incremental processing
-
-Partitioned writes for Gold tables
-
-Workflow orchestration (Airflow / Databricks Jobs)
-
-Data quality framework integration
-
-Small file compaction
-
-Monitoring & alerting
-
-<h2 align="center">👨‍💻 Author</h2> <p align="center"> Spark Data Engineering practice project focused on large-scale processing, pipeline architecture, and Spark optimization. </p> 
+├── bronze/
+│   └── taxi_raw_data/
+├── silver/
+│   ├── clean_valid_trips/
+│   └── anomalies/
+└── gold/
+    ├── daily_revenue/
+    └── hourly_demand/</pre>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 20px;">
+
+  <div style="border: 1px solid #cd7f32; border-left: 10px solid #cd7f32; padding: 20px; border-radius: 8px; background-color: #fffaf5;">
+    <h3 style="color: #cd7f32; margin-top: 0;">🥉 Bronze Layer — Raw Data</h3>
+    <p><strong>Purpose:</strong> Store original structured dataset with no business logic applied. Convert CSV → Parquet.</p>
+    <strong>Validation Performed:</strong>
+    <ul>
+      <li>Row count verification (112M+ rows)</li>
+      <li>Null checks & Negative fare detection</li>
+      <li>Distance validation & Timestamp consistency check</li>
+    </ul>
+    <em>Result: Bronze keeps data exactly as received.</em>
+  </div>
+
+  <div style="border: 1px solid #c0c0c0; border-left: 10px solid #c0c0c0; padding: 20px; border-radius: 8px; background-color: #fcfcfc;">
+    <h3 style="color: #7d7d7d; margin-top: 0;">🥈 Silver Layer — Clean & Validated Data</h3>
+    <p><strong>Purpose:</strong> Apply business rules, engineer duration, and separate clean vs. invalid trips.</p>
+    <strong>Transformations & Rules:</strong>
+    <ul>
+      <li>Convert string ➔ timestamp | Calculate <code>trip_duration_minutes</code></li>
+      <li>Validation: Duration > 0, Fare > 0, Passenger count > 0, Pickup ≤ Dropoff</li>
+    </ul>
+    <strong>Outputs:</strong> <code>clean_valid_trips/</code>, <code>anomalies/</code>
+  </div>
+
+  <div style="border: 1px solid #ffd700; border-left: 10px solid #ffd700; padding: 20px; border-radius: 8px; background-color: #fffef0;">
+    <h3 style="color: #b8860b; margin-top: 0;">🥇 Gold Layer — Business KPIs</h3>
+    <p>Analytics-ready datasets for dashboards and reporting.</p>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+      <div>
+        <strong>📊 Daily Revenue KPI</strong>
+        <ul>
+          <li>Revenue/Trips per day</li>
+          <li>Aggs: SUM, COUNT, AVG</li>
+        </ul>
+      </div>
+      <div>
+        <strong>⏰ Hourly Demand Intelligence</strong>
+        <ul>
+          <li>Peak hours & revenue trends</li>
+          <li>Avg fare & distance patterns</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<hr />
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+  <div style="padding: 15px; border: 1px solid #ddd; border-radius: 8px;">
+    <h4>🚀 Performance Optimizations</h4>
+    <small>Explicit schema, Parquet conversion, Column pruning, Repartition before groupBy, Shuffle partition tuning, Explain plan analysis, Adaptive execution.</small>
+  </div>
+  <div style="padding: 15px; border: 1px solid #ddd; border-radius: 8px;">
+    <h4>🛠️ Technologies Used</h4>
+    <small>Apache Spark (PySpark), Databricks, Parquet, Distributed Processing, Data Engineering Best Practices.</small>
+  </div>
+</div>
+
+<hr />
+
+<h3 align="center">📈 Project Impact & Insights</h3>
+<table width="100%" style="border-collapse: collapse;">
+  <tr style="background-color: #f2f2f2;">
+    <th style="padding: 10px; border: 1px solid #ddd;">What This Project Demonstrates</th>
+    <th style="padding: 10px; border: 1px solid #ddd;">🎯 Key Learnings</th>
+  </tr>
+  <tr>
+    <td style="padding: 10px; border: 1px solid #ddd; vertical-align: top;">
+      • Handling 100M+ rows<br>• Layered Medallion architecture<br>• Data quality engineering<br>• Partition strategy design
+    </td>
+    <td style="padding: 10px; border: 1px solid #ddd; vertical-align: top;">
+      • Control shuffle operations<br>• Measure anomalies before cleaning<br>• Separate raw, clean, and business layers
+    </td>
+  </tr>
+</table>
+
+<hr />
+
+<div style="padding: 15px; background-color: #eefbff; border-radius: 8px; border: 1px dashed #0077b6;">
+  <h4>📌 Future Improvements</h4>
+  <p style="font-size: 0.9em;">
+    Incremental processing • Partitioned writes for Gold • Workflow orchestration (Airflow/Jobs) • Data quality framework • Small file compaction • Monitoring & alerting.
+  </p>
+</div>
+
+<p align="center" style="margin-top: 20px;">
+  <strong>👨‍💻 Author:</strong> Spark Data Engineering practice project focused on large-scale processing and Spark optimization.
+</p>
