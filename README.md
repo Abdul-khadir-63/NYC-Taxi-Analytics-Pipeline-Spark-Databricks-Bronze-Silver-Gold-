@@ -261,4 +261,5 @@ Small file compaction
 
 Monitoring & alerting
 
-<h2 align="center">👨‍💻 Author</h2> <p align="center"> Spark Data Engineering practice project focused on large-scale processing, pipeline architecture, and Spark optimization. </p> ```
+## 🌟 About Me
+Hi there! I'm **Abdul Khadir**, I'm an Deploma computer Science Pass out Student on a mission to Became a Data Engineer!
