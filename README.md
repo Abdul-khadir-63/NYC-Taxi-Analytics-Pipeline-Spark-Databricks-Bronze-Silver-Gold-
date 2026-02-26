@@ -58,7 +58,7 @@ df.write.format("parquet") \
 
 CSV is converted into columnar Parquet format for better performance.
 
-🏗 Project Architecture
+ <h1 align="center">🏗 Project Architecture</h1>
 day_20_project/
 
 bronze/
@@ -94,8 +94,7 @@ Timestamp consistency check
 
 Bronze keeps data exactly as received.
 
-🥈 Silver Layer — Clean & Validated Data
-Purpose
+<h1 align="center">🥈 Silver Layer — Clean & Validated Data Purpose </h1>
 
 Apply business rules
 
@@ -129,7 +128,7 @@ anomalies/
 
 This layer simulates real-world data quality enforcement.
 
-🥇 Gold Layer — Business KPIs
+<h1 align="center"> 🥇 Gold Layer — Business KPIs </h1>
 
 Gold contains analytics-ready tables for reporting and dashboards.
 
@@ -153,7 +152,7 @@ AVG(total_amount)
 Stored at:
 
 gold/daily_revenue/
-⏰ Hourly Demand Intelligence
+<h1 align="center"> ⏰ Hourly Demand Intelligence </h1>
 Business Questions
 
 Peak travel hours?
@@ -177,7 +176,7 @@ Average trip distance
 Stored at:
 
 gold/hourly_demand/
-🚀 Performance Optimizations Applied
+<h1 align="center">  🚀 Performance Optimizations Applied </h1>
 
 Explicit schema definition
 
@@ -193,7 +192,7 @@ Explain plan analysis
 
 Adaptive execution awareness
 
-📈 What This Project Demonstrates
+<h1 align="center"> 📈 What This Project Demonstrates </h1>
 
 Handling large datasets (100M+ rows)
 
@@ -209,7 +208,7 @@ Partition strategy design
 
 Production-style ETL mindset
 
-🛠 Technologies Used
+<h1 align="center">  🛠 Technologies Used </h1>
 
 Apache Spark (PySpark)
 
@@ -221,7 +220,7 @@ Distributed data processing
 
 Data engineering best practices
 
-🎯 Key Learnings
+<h1 align="center">  🎯 Key Learnings </h1>
 
 Shuffle operations are expensive and must be controlled
 
@@ -233,7 +232,7 @@ Separate raw, clean, and business layers
 
 Build analytics-ready tables, not just transformations
 
-📌 Future Improvements
+<h1 align="center">  📌 Future Improvements </h1>
 
 Incremental processing instead of overwrite
 
