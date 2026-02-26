@@ -253,7 +253,8 @@ BRONZE_OUTPUT_PATH = "/Volumes/workspace/default/NYC_Yellow_Taxi_2018_Project/br
 </ul>
 
 <hr>
-
+<h1 align="center">🌟 About Me</h1>
 <p align="center">
-<strong>👨‍💻 Author:</strong> Spark Data Engineering practice project focused on large-scale processing, pipeline design, and Spark optimization.
+<strong>## 
+Hi there! I'm **Abdul Khadir**, I'm an Deploma computer Science Pass out Student on a mission to Became a Data Engineer!
 </p>
