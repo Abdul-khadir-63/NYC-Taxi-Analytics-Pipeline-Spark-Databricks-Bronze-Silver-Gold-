@@ -57,7 +57,7 @@ taxi_2018.csv
 
 ### Step 2 — Read CSV with explicit schema
 
---python
+<b> python </b><br> 
 df = spark.read.csv(
     "/Volumes/workspace/default/kaggle_file/taxi_2018.csv",
     header=True,
