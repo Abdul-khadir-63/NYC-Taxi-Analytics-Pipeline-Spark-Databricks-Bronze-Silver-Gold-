@@ -71,7 +71,7 @@ df.write.format("parquet") \
 CSV → converted to Parquet for fast analytics.
 
 <h2 align="center">🏗 Project Architecture</h2>
-day_20_project/
+NYC_Project/
 
 bronze/
    taxi_raw_data/
