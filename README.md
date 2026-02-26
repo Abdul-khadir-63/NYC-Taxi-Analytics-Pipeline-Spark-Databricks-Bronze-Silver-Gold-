@@ -1,32 +1,35 @@
-# NYC-Taxi-Analytics-Pipeline-Spark-Databricks-Bronze-Silver-Gold-
-End-to-end data engineering project built with PySpark and Databricks using the Bronze–Silver–Gold architecture. This project processes a large NYC taxi dataset (~112M rows, ~10GB) and transforms raw data into clean, analytics-ready datasets for business insights.
+<h1 align="center">🚕 NYC Taxi Analytics Pipeline</h1>
 
-🚕 NYC Taxi Analytics Pipeline (Spark | Databricks)
+<p align="center">
+End-to-End Spark Data Engineering Project on 112M+ Records
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Apache%20Spark-PySpark-orange">
+  <img src="https://img.shields.io/badge/Platform-Databricks-red">
+  <img src="https://img.shields.io/badge/Data-10GB-blue">
+  <img src="https://img.shields.io/badge/Architecture-Bronze%20Silver%20Gold-green">
+</p>
 📌 Project Overview
 
-This project builds an end-to-end data engineering pipeline using Apache Spark on Databricks.
+This project builds a complete production-style data engineering pipeline using Apache Spark on Databricks.
 
-We process a 10GB NYC Yellow Taxi dataset (112M+ rows) and transform it through a structured:
+A 10GB NYC Yellow Taxi dataset (112M+ rows) is processed through a structured:
 
 Bronze → Silver → Gold architecture
 
-The goal is to simulate a real production-style data pipeline, including ingestion, cleaning, validation, aggregation, and performance optimization.
+The pipeline simulates real-world ingestion, cleaning, validation, aggregation, and performance optimization.
 
 🗂 Dataset Information
 
 Dataset Name: NYC Yellow Taxi Trip Records (2018)
-
 Source: Kaggle (Original data from NYC Taxi & Limousine Commission)
-
 File Used: taxi_2018.csv
-
 Size: ~10GB
-
 Total Rows: ~112,234,626
-
 Format: CSV
 
-Dataset Contains:
+Dataset Includes
 
 Pickup & dropoff timestamps
 
@@ -34,21 +37,15 @@ Passenger count
 
 Trip distance
 
-Fare breakdown (fare, tax, tip, tolls, etc.)
+Fare breakdown (fare, tax, tip, tolls)
 
 Payment type
 
 ⚙️ How Dataset Was Loaded in Databricks
-1️⃣ Upload Dataset to Databricks
-
-The dataset was uploaded into Databricks volume:
-
+1️⃣ Upload dataset to Databricks Volume
 kaggle_file/
    taxi_2018.csv
 2️⃣ Read CSV with Explicit Schema
-
-We defined a structured schema to avoid schema inference issues and improve performance:
-
 df = spark.read.csv(
     "/Volumes/workspace/default/kaggle_file/taxi_2018.csv",
     header=True,
@@ -59,7 +56,7 @@ df.write.format("parquet") \
     .mode("overwrite") \
     .save("/Volumes/workspace/default/day_20_project/bronze/taxi_raw_data/")
 
-This converts raw CSV into columnar Parquet format for efficient analytics.
+CSV is converted into columnar Parquet format for better performance.
 
 🏗 Project Architecture
 day_20_project/
@@ -75,15 +72,15 @@ gold/
    daily_revenue/
    hourly_demand/
 🥉 Bronze Layer — Raw Data
-Purpose:
+Purpose
 
 Store original structured dataset
 
-No business logic changes
+No business logic modifications
 
 Convert CSV → Parquet
 
-Validation Performed:
+Validation Performed
 
 Row count verification (112M+ rows)
 
@@ -93,12 +90,12 @@ Negative fare detection
 
 Distance validation
 
-Timestamp format consistency
+Timestamp consistency check
 
-Bronze layer keeps data exactly as received.
+Bronze keeps data exactly as received.
 
 🥈 Silver Layer — Clean & Validated Data
-Purpose:
+Purpose
 
 Apply business rules
 
@@ -110,13 +107,13 @@ Identify anomalies
 
 Separate clean vs invalid trips
 
-Transformations:
+Transformations
 
 Convert string → timestamp
 
 Calculate trip_duration_minutes
 
-Validate business logic:
+Apply business validation rules:
 
 Duration > 0
 
@@ -126,42 +123,38 @@ Passenger count > 0
 
 Pickup ≤ Dropoff
 
-Outputs:
-
+Outputs
 clean_valid_trips/
-
 anomalies/
 
 This layer simulates real-world data quality enforcement.
 
 🥇 Gold Layer — Business KPIs
 
-Gold layer contains analytics-ready tables for reporting and dashboards.
+Gold contains analytics-ready tables for reporting and dashboards.
 
-📊 1️⃣ Daily Revenue KPI
-
-Business Questions:
+📊 Daily Revenue KPI
+Business Questions
 
 How much revenue per day?
 
 Total trips per day?
 
-Average trip value?
+Average trip value per day?
 
-Aggregations:
+Aggregations
 
-Sum of total_amount
+SUM(total_amount)
 
-Count of trips
+COUNT(*)
 
-Average trip value
+AVG(total_amount)
 
 Stored at:
 
 gold/daily_revenue/
-⏰ 2️⃣ Hourly Demand Intelligence
-
-Business Questions:
+⏰ Hourly Demand Intelligence
+Business Questions
 
 Peak travel hours?
 
@@ -169,9 +162,9 @@ Revenue by hour?
 
 Average fare per hour?
 
-Trip distance patterns?
+Trip distance trends?
 
-Aggregations:
+Aggregations
 
 Trip count
 
@@ -208,13 +201,13 @@ Layered data architecture
 
 Data quality engineering
 
-Business KPI design
+Business KPI modeling
 
 Spark performance tuning
 
-Partition strategy thinking
+Partition strategy design
 
-Real-world ETL mindset
+Production-style ETL mindset
 
 🛠 Technologies Used
 
@@ -224,21 +217,21 @@ Databricks
 
 Parquet
 
-Distributed Data Processing
+Distributed data processing
 
-Data Engineering Best Practices
+Data engineering best practices
 
 🎯 Key Learnings
 
-Shuffle is expensive — must be controlled.
+Shuffle operations are expensive and must be controlled
 
-Repartition strategy affects performance.
+Repartition strategy directly impacts performance
 
-Always measure anomalies before cleaning.
+Always measure anomalies before cleaning
 
-Separate raw, clean, and business layers.
+Separate raw, clean, and business layers
 
-Build analytics tables, not just transformations.
+Build analytics-ready tables, not just transformations
 
 📌 Future Improvements
 
@@ -246,15 +239,14 @@ Incremental processing instead of overwrite
 
 Partitioned writes for large Gold tables
 
-Job orchestration (Airflow / Workflows)
+Workflow orchestration (Airflow / Databricks Jobs)
 
 Data quality framework integration
 
 Small file compaction
 
-Monitoring & alerting
+Monitoring and alerting
 
 👨‍💻 Author
 
-Spark Data Engineering Practice Project
-Built for learning advanced Spark pipeline design and optimization.
+Spark Data Engineering practice project focused on large-scale processing, pipeline architecture, and Spark optimization.
