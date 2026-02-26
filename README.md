@@ -45,6 +45,75 @@ The pipeline simulates real-world ingestion, cleaning, validation, aggregation, 
 - Payment type  
 
 ---
+<h2 align="center">📥 Dataset & Volume Setup</h2>
+
+<p align="center">
+  <em>The dataset is not included in this repository because it is ~10GB. Follow the steps below to configure Databricks correctly.</em>
+</p>
+
+<div style="margin-bottom: 25px;">
+  <h3>1️⃣ Download Dataset</h3>
+  <p>Download the <strong>NYC Yellow Taxi 2018</strong> dataset from Kaggle:</p>
+  <ul>
+    <li><strong>Search:</strong> NYC Yellow Taxi Trip Records 2018</li>
+    <li><strong>File Name:</strong> <code>taxi_2018.csv</code></li>
+  </ul>
+</div>
+
+<div style="margin-bottom: 25px;">
+  <h3>2️⃣ Create Project Folder Structure</h3>
+  <p>In Databricks, navigate to <code>Data > Volumes > workspace/default/</code> and create the following directory hierarchy:</p>
+  <pre style="background-color: #f6f8fa; padding: 15px; border-radius: 8px; border: 1px dotted #0366d6; color: #24292e;">
+NYC_Yellow_Taxi_2018_Project/
+├── bronze/
+│   └── taxi_raw_data/
+├── silver/
+│   ├── clean_valid_trips/
+│   └── anomalies/
+└── gold/
+    ├── daily_revenue/
+    └── hourly_demand/</pre>
+</div>
+
+<div style="margin-bottom: 25px;">
+  <h3>3️⃣ Upload Dataset</h3>
+  <p>Create a dedicated ingestion folder and upload your raw file:</p>
+  <ul>
+    <li><strong>Folder:</strong> <code>workspace/default/kaggle_files/</code></li>
+    <li><strong>File:</strong> <code>taxi_2018.csv</code></li>
+    <li><strong>Final Path:</strong> <code>/Volumes/workspace/default/kaggle_files/taxi_2018.csv</code></li>
+  </ul>
+</div>
+
+<div style="margin-bottom: 25px;">
+  <h3>4️⃣ Update Paths in Code</h3>
+  <p>Ensure the following paths are configured in your Python scripts:</p>
+  <div style="background-color: #fdf6e3; padding: 10px; border-radius: 5px; border-left: 5px solid #b58900;">
+    <code style="color: #d33682;">INPUT_PATH</code> = "/Volumes/workspace/default/kaggle_files/taxi_2018.csv"<br>
+    <code style="color: #d33682;">BRONZE_OUTPUT_PATH</code> = "/Volumes/workspace/default/NYC_Yellow_Taxi_2018_Project/bronze/taxi_raw_data/"
+  </div>
+</div>
+
+<div style="margin-bottom: 25px;">
+  <h3>5️⃣ Run the Pipeline</h3>
+  <p>Run the scripts in the following sequential order:</p>
+  <ol>
+    <li><code>bronze.py</code></li>
+    <li><code>silver.py</code></li>
+    <li><code>gold.py</code></li>
+  </ol>
+</div>
+
+<hr />
+
+<div style="background-color: #fffbdd; border: 1px solid #d2991d; padding: 15px; border-radius: 8px;">
+  <strong>⚠️ Important Notes:</strong>
+  <ul>
+    <li>Dataset contains <strong>112M+ rows</strong>.</li>
+    <li>First execution may take time; ensure Spark cluster is active.</li>
+    <li>Adjust volume paths if your workspace naming differs.</li>
+  </ul>
+</div>
 
 ## ⚙️ How Dataset Was Loaded in Databricks
 
