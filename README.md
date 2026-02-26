@@ -11,59 +11,83 @@
   <img src="https://img.shields.io/badge/Architecture-Bronze%20Silver%20Gold-green">
 </p>
 
----
+<hr>
 
-## 📌 Project Overview
+<h2 align="center">📌 Project Overview</h2>
 
-This project builds a production-style data engineering pipeline using **Apache Spark on Databricks**.
+<p>
+This project demonstrates how to build a real-world data engineering pipeline using <strong>Apache Spark (PySpark)</strong> on <strong>Databricks</strong>.
+</p>
 
-A **10GB NYC Yellow Taxi dataset (112M+ rows)** is processed through a structured architecture:
+<p>
+The dataset contains over <strong>112 million taxi trip records</strong> (approximately 10GB). The objective of this project is to simulate how a production data team would ingest raw data, clean it, validate it, transform it, and prepare business-ready datasets for reporting and analytics.
+</p>
 
-<p align="center"><b>Bronze → Silver → Gold</b></p>
+<p align="center"><strong>Bronze → Silver → Gold Architecture</strong></p>
 
-The pipeline simulates real-world ingestion, cleaning, validation, aggregation, and performance optimization.
+<p>
+This layered approach ensures data reliability, traceability, performance optimization, and business usability.
+</p>
 
----
+<hr>
 
-## 🗂 Dataset Information
+<h2 align="center">🗂 Dataset Information</h2>
 
-| Attribute | Details |
-|---|---|
-| Dataset | NYC Yellow Taxi Trip Records (2018) |
-| Source | Kaggle (NYC Taxi & Limousine Commission) |
-| File | taxi_2018.csv |
-| Size | ~10GB |
-| Rows | ~112,234,626 |
-| Format | CSV |
+<table width="100%" style="border-collapse: collapse;">
+<tr style="background-color:#f2f2f2;">
+<th style="padding:10px; border:1px solid #ddd;">Attribute</th>
+<th style="padding:10px; border:1px solid #ddd;">Details</th>
+</tr>
+<tr>
+<td style="padding:10px; border:1px solid #ddd;">Dataset</td>
+<td style="padding:10px; border:1px solid #ddd;">NYC Yellow Taxi Trip Records (2018)</td>
+</tr>
+<tr>
+<td style="padding:10px; border:1px solid #ddd;">Source</td>
+<td style="padding:10px; border:1px solid #ddd;">Kaggle (NYC Taxi & Limousine Commission)</td>
+</tr>
+<tr>
+<td style="padding:10px; border:1px solid #ddd;">File</td>
+<td style="padding:10px; border:1px solid #ddd;">taxi_2018.csv</td>
+</tr>
+<tr>
+<td style="padding:10px; border:1px solid #ddd;">Size</td>
+<td style="padding:10px; border:1px solid #ddd;">~10GB</td>
+</tr>
+<tr>
+<td style="padding:10px; border:1px solid #ddd;">Rows</td>
+<td style="padding:10px; border:1px solid #ddd;">~112,234,626</td>
+</tr>
+</table>
 
-### Dataset Includes
+<p><strong>The dataset includes:</strong></p>
+<ul>
+<li>Pickup and dropoff timestamps</li>
+<li>Passenger count</li>
+<li>Trip distance</li>
+<li>Detailed fare breakdown (fare, tax, tip, tolls, surcharge)</li>
+<li>Payment type information</li>
+</ul>
 
-- Pickup & dropoff timestamps  
-- Passenger count  
-- Trip distance  
-- Fare breakdown (fare, tax, tip, tolls)  
-- Payment type  
+<hr>
 
----
 <h2 align="center">📥 Dataset & Volume Setup</h2>
 
 <p align="center">
-  <em>The dataset is not included in this repository because it is ~10GB. Follow the steps below to configure Databricks correctly.</em>
+<em>The dataset is not included in this repository due to its size. Follow these steps to configure Databricks correctly.</em>
 </p>
 
-<div style="margin-bottom: 25px;">
-  <h3>1️⃣ Download Dataset</h3>
-  <p>Download the <strong>NYC Yellow Taxi 2018</strong> dataset from Kaggle:</p>
-  <ul>
-    <li><strong>Search:</strong> NYC Yellow Taxi Trip Records 2018</li>
-    <li><strong>File Name:</strong> <code>taxi_2018.csv</code></li>
-  </ul>
-</div>
+<h3>1️⃣ Download Dataset</h3>
+<p>
+Download the dataset from Kaggle by searching:
+<strong>NYC Yellow Taxi Trip Records 2018</strong>
+</p>
+<p>Download the file: <code>taxi_2018.csv</code></p>
 
-<div style="margin-bottom: 25px;">
-  <h3>2️⃣ Create Project Folder Structure</h3>
-  <p>In Databricks, navigate to <code>Data > Volumes > workspace/default/</code> and create the following directory hierarchy:</p>
-  <pre style="background-color: #f6f8fa; padding: 15px; border-radius: 8px; border: 1px dotted #0366d6; color: #24292e;">
+<h3>2️⃣ Create Volume Folder Structure</h3>
+<p>In Databricks go to: <strong>Data → Volumes → workspace/default/</strong></p>
+
+<pre>
 NYC_Yellow_Taxi_2018_Project/
 ├── bronze/
 │   └── taxi_raw_data/
@@ -72,180 +96,164 @@ NYC_Yellow_Taxi_2018_Project/
 │   └── anomalies/
 └── gold/
     ├── daily_revenue/
-    └── hourly_demand/</pre>
-</div>
+    └── hourly_demand/
+</pre>
 
-<div style="margin-bottom: 25px;">
-  <h3>3️⃣ Upload Dataset</h3>
-  <p>Create a dedicated ingestion folder and upload your raw file:</p>
-  <ul>
-    <li><strong>Folder:</strong> <code>workspace/default/kaggle_files/</code></li>
-    <li><strong>File:</strong> <code>taxi_2018.csv</code></li>
-    <li><strong>Final Path:</strong> <code>/Volumes/workspace/default/kaggle_files/taxi_2018.csv</code></li>
-  </ul>
-</div>
+<p>This structure ensures clean separation between raw, validated, and business-ready data.</p>
 
-<div style="margin-bottom: 25px;">
-  <h3>4️⃣ Update Paths in Code</h3>
-  <p>Ensure the following paths are configured in your Python scripts:</p>
-  <div style="background-color: #fdf6e3; padding: 10px; border-radius: 5px; border-left: 5px solid #b58900;">
-    <code style="color: #d33682;">INPUT_PATH</code> = "/Volumes/workspace/default/kaggle_files/taxi_2018.csv"<br>
-    <code style="color: #d33682;">BRONZE_OUTPUT_PATH</code> = "/Volumes/workspace/default/NYC_Yellow_Taxi_2018_Project/bronze/taxi_raw_data/"
-  </div>
-</div>
+<h3>3️⃣ Upload Dataset</h3>
+<p>Upload <code>taxi_2018.csv</code> into:</p>
 
-<div style="margin-bottom: 25px;">
-  <h3>5️⃣ Run the Pipeline</h3>
-  <p>Run the scripts in the following sequential order:</p>
-  <ol>
-    <li><code>bronze.py</code></li>
-    <li><code>silver.py</code></li>
-    <li><code>gold.py</code></li>
-  </ol>
-</div>
+<pre>
+/Volumes/workspace/default/kaggle_files/taxi_2018.csv
+</pre>
 
-<hr />
+<h3>4️⃣ Update Paths in Code</h3>
 
-<div style="background-color: #fffbdd; border: 1px solid #d2991d; padding: 15px; border-radius: 8px;">
-  <strong>⚠️ Important Notes:</strong>
-  <ul>
-    <li>Dataset contains <strong>112M+ rows</strong>.</li>
-    <li>First execution may take time; ensure Spark cluster is active.</li>
-    <li>Adjust volume paths if your workspace naming differs.</li>
-  </ul>
-</div>
+<pre>
+INPUT_PATH = "/Volumes/workspace/default/kaggle_files/taxi_2018.csv"
+BRONZE_OUTPUT_PATH = "/Volumes/workspace/default/NYC_Yellow_Taxi_2018_Project/bronze/taxi_raw_data/"
+</pre>
 
-## ⚙️ How Dataset Was Loaded in Databricks
+<h3>5️⃣ Run Pipeline in Order</h3>
 
-### Step 1 — Upload dataset to volume
+<ol>
+<li>bronze.py</li>
+<li>silver.py</li>
+<li>gold.py</li>
+</ol>
 
-
-kaggle_file/
-taxi_2018.csv
-
-
-### Step 2 — Read CSV with explicit schema
-
-<b> python </b><br> 
-df = spark.read.csv(
-    "/Volumes/workspace/default/kaggle_file/taxi_2018.csv",
-    header=True,
-    schema=taxi_dataset_schema
-)
-Step 3 — Save as Parquet (Bronze layer)
-df.write.format("parquet") \
-    .mode("overwrite") \
-    .save("/Volumes/workspace/default/day_20_project/bronze/taxi_raw_data/")
-
-CSV → converted to Parquet for fast analytics.
+<hr>
 
 <h1 align="center">🏗️ Project Architecture & Pipeline Design</h1>
 
+<h3>🥉 Bronze Layer — Raw Data</h3>
 
+<p><strong>Purpose:</strong></p>
+<ul>
+<li>Store raw ingested data</li>
+<li>Convert CSV to optimized Parquet format</li>
+<li>No business logic modifications</li>
+</ul>
 
-<div style="background-color: #f6f8fa; padding: 20px; border-radius: 10px; border: 1px solid #ddd; margin-bottom: 30px;">
-  <h3 style="margin-top: 0;">📁 Directory Structure</h3>
-  <pre style="font-family: 'Courier New', monospace; color: #24292e;">
-NYC_Project/
-├── bronze/
-│   └── taxi_raw_data/
-├── silver/
-│   ├── clean_valid_trips/
-│   └── anomalies/
-└── gold/
-    ├── daily_revenue/
-    └── hourly_demand/</pre>
-</div>
+<p><strong>Validation Checks Performed:</strong></p>
+<ul>
+<li>Row count verification</li>
+<li>Null value analysis</li>
+<li>Negative fare detection</li>
+<li>Trip distance validation</li>
+<li>Timestamp consistency checks</li>
+</ul>
 
-<div style="display: flex; flex-direction: column; gap: 20px;">
+<p>Bronze acts as a reliable raw data backup layer.</p>
 
-  <div style="border: 1px solid #cd7f32; border-left: 10px solid #cd7f32; padding: 20px; border-radius: 8px; background-color: #fffaf5;">
-    <h3 style="color: #cd7f32; margin-top: 0;">🥉 Bronze Layer — Raw Data</h3>
-    <p><strong>Purpose:</strong> Store original structured dataset with no business logic applied. Convert CSV → Parquet.</p>
-    <strong>Validation Performed:</strong>
+<hr>
+
+<h3>🥈 Silver Layer — Clean & Validated Data</h3>
+
+<p><strong>Purpose:</strong></p>
+<ul>
+<li>Clean the data</li>
+<li>Apply business rules</li>
+<li>Generate derived columns</li>
+<li>Separate valid and invalid trips</li>
+</ul>
+
+<p><strong>Key Transformations:</strong></p>
+<ul>
+<li>Convert string timestamps to proper timestamp format</li>
+<li>Calculate <code>trip_duration_minutes</code></li>
+<li>Apply validation rules:
     <ul>
-      <li>Row count verification (112M+ rows)</li>
-      <li>Null checks & Negative fare detection</li>
-      <li>Distance validation & Timestamp consistency check</li>
+        <li>Duration must be greater than 0</li>
+        <li>Fare must be positive</li>
+        <li>Passenger count must be positive</li>
+        <li>Pickup time must be before dropoff time</li>
     </ul>
-    <em>Result: Bronze keeps data exactly as received.</em>
-  </div>
+</li>
+</ul>
 
-  <div style="border: 1px solid #c0c0c0; border-left: 10px solid #c0c0c0; padding: 20px; border-radius: 8px; background-color: #fcfcfc;">
-    <h3 style="color: #7d7d7d; margin-top: 0;">🥈 Silver Layer — Clean & Validated Data</h3>
-    <p><strong>Purpose:</strong> Apply business rules, engineer duration, and separate clean vs. invalid trips.</p>
-    <strong>Transformations & Rules:</strong>
-    <ul>
-      <li>Convert string ➔ timestamp | Calculate <code>trip_duration_minutes</code></li>
-      <li>Validation: Duration > 0, Fare > 0, Passenger count > 0, Pickup ≤ Dropoff</li>
-    </ul>
-    <strong>Outputs:</strong> <code>clean_valid_trips/</code>, <code>anomalies/</code>
-  </div>
+<p>Output is divided into:</p>
+<ul>
+<li><code>clean_valid_trips</code></li>
+<li><code>anomalies</code></li>
+</ul>
 
-  <div style="border: 1px solid #ffd700; border-left: 10px solid #ffd700; padding: 20px; border-radius: 8px; background-color: #fffef0;">
-    <h3 style="color: #b8860b; margin-top: 0;">🥇 Gold Layer — Business KPIs</h3>
-    <p>Analytics-ready datasets for dashboards and reporting.</p>
-    
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-      <div>
-        <strong>📊 Daily Revenue KPI</strong>
-        <ul>
-          <li>Revenue/Trips per day</li>
-          <li>Aggs: SUM, COUNT, AVG</li>
-        </ul>
-      </div>
-      <div>
-        <strong>⏰ Hourly Demand Intelligence</strong>
-        <ul>
-          <li>Peak hours & revenue trends</li>
-          <li>Avg fare & distance patterns</li>
-        </ul>
-      </div>
-    </div>
-  </div>
+<hr>
 
-</div>
+<h3>🥇 Gold Layer — Business KPIs</h3>
 
-<hr />
+<p>This layer creates analytics-ready datasets used for dashboards and reporting.</p>
 
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
-  <div style="padding: 15px; border: 1px solid #ddd; border-radius: 8px;">
-    <h4>🚀 Performance Optimizations</h4>
-    <small>Explicit schema, Parquet conversion, Column pruning, Repartition before groupBy, Shuffle partition tuning, Explain plan analysis, Adaptive execution.</small>
-  </div>
-  <div style="padding: 15px; border: 1px solid #ddd; border-radius: 8px;">
-    <h4>🛠️ Technologies Used</h4>
-    <small>Apache Spark (PySpark), Databricks, Parquet, Distributed Processing, Data Engineering Best Practices.</small>
-  </div>
-</div>
+<h4>📊 Daily Revenue KPI</h4>
+<ul>
+<li>Total revenue per day</li>
+<li>Total trips per day</li>
+<li>Average trip value per day</li>
+</ul>
 
-<hr />
+<h4>⏰ Hourly Demand Intelligence</h4>
+<ul>
+<li>Peak travel hours</li>
+<li>Revenue trends by hour</li>
+<li>Average fare patterns</li>
+<li>Trip distance trends</li>
+</ul>
 
-<h3 align="center">📈 Project Impact & Insights</h3>
-<table width="100%" style="border-collapse: collapse;">
-  <tr style="background-color: #f2f2f2;">
-    <th style="padding: 10px; border: 1px solid #ddd;">What This Project Demonstrates</th>
-    <th style="padding: 10px; border: 1px solid #ddd;">🎯 Key Learnings</th>
-  </tr>
-  <tr>
-    <td style="padding: 10px; border: 1px solid #ddd; vertical-align: top;">
-      • Handling 100M+ rows<br>• Layered Medallion architecture<br>• Data quality engineering<br>• Partition strategy design
-    </td>
-    <td style="padding: 10px; border: 1px solid #ddd; vertical-align: top;">
-      • Control shuffle operations<br>• Measure anomalies before cleaning<br>• Separate raw, clean, and business layers
-    </td>
-  </tr>
-</table>
+<hr>
 
-<hr />
+<h3 align="center">🚀 Performance Optimizations</h3>
 
-<div style="padding: 15px; background-color: #eefbff; border-radius: 8px; border: 1px dashed #0077b6;">
-  <h4>📌 Future Improvements</h4>
-  <p style="font-size: 0.9em;">
-    Incremental processing • Partitioned writes for Gold • Workflow orchestration (Airflow/Jobs) • Data quality framework • Small file compaction • Monitoring & alerting.
-  </p>
-</div>
+<ul>
+<li>Explicit schema definition to avoid inference overhead</li>
+<li>Parquet columnar storage format</li>
+<li>Column pruning</li>
+<li>Repartitioning before aggregation</li>
+<li>Shuffle partition tuning</li>
+<li>Query plan analysis using explain()</li>
+<li>Adaptive execution awareness</li>
+</ul>
 
-<p align="center" style="margin-top: 20px;">
-  <strong>👨‍💻 Author:</strong> Spark Data Engineering practice project focused on large-scale processing and Spark optimization.
+<hr>
+
+<h3 align="center">📈 What This Project Demonstrates</h3>
+
+<ul>
+<li>Handling 100M+ rows efficiently</li>
+<li>Production-style medallion architecture</li>
+<li>Data validation and anomaly detection</li>
+<li>Business KPI design</li>
+<li>Spark optimization strategies</li>
+<li>Partition strategy thinking</li>
+</ul>
+
+<hr>
+
+<h3 align="center">🎯 Key Learnings</h3>
+
+<ul>
+<li>Shuffle operations are expensive and must be controlled</li>
+<li>Partition strategy impacts performance significantly</li>
+<li>Always measure anomalies before removing data</li>
+<li>Separate raw, clean, and business layers properly</li>
+<li>Build analytics-ready datasets, not just transformations</li>
+</ul>
+
+<hr>
+
+<h3 align="center">📌 Future Improvements</h3>
+
+<ul>
+<li>Incremental processing instead of overwrite mode</li>
+<li>Delta Lake integration</li>
+<li>Workflow orchestration</li>
+<li>Automated data quality monitoring</li>
+<li>Small file optimization</li>
+<li>Performance benchmarking reports</li>
+</ul>
+
+<hr>
+
+<p align="center">
+<strong>👨‍💻 Author:</strong> Spark Data Engineering practice project focused on large-scale processing, pipeline design, and Spark optimization.
 </p>
