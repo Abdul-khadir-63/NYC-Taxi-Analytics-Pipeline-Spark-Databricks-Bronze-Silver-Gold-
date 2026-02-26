@@ -3,11 +3,7 @@
 <p align="center">
   End-to-End Spark Data Engineering Project on 112M+ Records
 </p>
- ----------------------------------
-<p align="center">
-  <img src="docs/Data%20flow%20Diagram.png" alt="NYC Taxi Data Flow Diagram" width="850">
-</p>
- -------------------------------------
+
 <p align="center">
   <img src="https://img.shields.io/badge/Apache%20Spark-PySpark-orange">
   <img src="https://img.shields.io/badge/Platform-Databricks-red">
@@ -126,7 +122,9 @@ BRONZE_OUTPUT_PATH = "/Volumes/workspace/default/NYC_Yellow_Taxi_2018_Project/br
 <li>silver.py</li>
 <li>gold.py</li>
 </ol>
-
+<p align="center">
+  <img src="docs/Data%20flow%20Diagram.png" alt="NYC Taxi Data Flow Diagram" width="850">
+</p>
 <hr>
 
 <h1 align="center">🏗️ Project Architecture & Pipeline Design</h1>
